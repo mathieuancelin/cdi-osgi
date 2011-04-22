@@ -11,7 +11,7 @@
 
     <artifactId>cdi-osgi-api</artifactId>
     <packaging>bundle</packaging>
-    <name>Weld OSGi :: CDI OSGi API</name>
+    <name>CDI OSGi :: API</name>
 
     <dependencies>
         <dependency>

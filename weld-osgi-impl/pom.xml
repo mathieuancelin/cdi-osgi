@@ -11,7 +11,7 @@
 
     <artifactId>weld-osgi-impl</artifactId>
     <packaging>bundle</packaging>
-    <name>Weld OSGi :: Impl</name>
+    <name>CDI OSGi :: Weld Integration</name>
 
     <dependencies>
         <dependency>

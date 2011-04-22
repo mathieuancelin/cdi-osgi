@@ -11,7 +11,7 @@
 
     <artifactId>cdi-osgi-impl</artifactId>
     <packaging>bundle</packaging>
-    <name>Weld OSGi :: CDI OSGi Impl</name>
+    <name>CDI OSGi :: Extension</name>
 
     <dependencies>
         <dependency>
