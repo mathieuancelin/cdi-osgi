@@ -269,7 +269,7 @@ public class Weld {
         return new BundleDeployment(bundle, bootstrap, factory);
     }
 
-    public void shutdown() {
+    public boolean shutdown() {
         // TODO this should also be part of the extension ...
         if (started) {
             synchronized (this) {
@@ -296,11 +296,14 @@ public class Weld {
                         bootstrap.shutdown();
                     } catch (Throwable t) {}
                     started = false;
+                    return true;
                 } else {
                     LOGGER.log(Level.INFO, "Skipping spurious call to shutdown");
+                    return false;
                 }
             }
         }
+        return false;
     }
 
     public Event getEvent() {

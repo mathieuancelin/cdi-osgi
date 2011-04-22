@@ -4,13 +4,13 @@ import org.osgi.framework.Bundle;
 
 /**
  *
- * @author mathieu
+ * @author Mathieu ANCELIN - SERLI (mathieu.ancelin@serli.com)
  */
 public interface CDIContainerFactory {
 
-    void init();
+    Class<? extends CDIContainerFactory> delegateClass();
 
-    void shutdown();
+    String getID();
 
     CDIContainer container(Bundle bundle);
 }

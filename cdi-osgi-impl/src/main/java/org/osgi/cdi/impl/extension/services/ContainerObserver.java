@@ -27,7 +27,7 @@ public class ContainerObserver {
 
     public void listenInterBundleEvents(@Observes InterBundleEvent event) {
         if (!event.isSent()) {
-            for (CDIContainer container : containers.getContainers()) {
+            for (CDIContainer container : containers) {
                 if (!container.equals(currentContainer)) {
                     event.sent();
                     container.fire(event);

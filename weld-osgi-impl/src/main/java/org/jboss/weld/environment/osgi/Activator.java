@@ -1,17 +1,15 @@
 package org.jboss.weld.environment.osgi;
 
 import org.jboss.weld.bootstrap.api.SingletonProvider;
+import org.jboss.weld.environment.osgi.integration.BundleSingletonProvider;
 import org.osgi.cdi.api.integration.CDIContainerFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
 /**
- * Created by IntelliJ IDEA.
- * User: guillaume
- * Date: 27/01/11
- * Time: 22:28
- * To change this template use File | Settings | File Templates.
+ *
+ * @author Mathieu ANCELIN - SERLI (mathieu.ancelin@serli.com)
  */
 public class Activator implements BundleActivator {
 
@@ -20,6 +18,7 @@ public class Activator implements BundleActivator {
 
     @Override
     public void start(BundleContext context) throws Exception {
+        SingletonProvider.initialize(new BundleSingletonProvider());
         reg = context.registerService(CDIContainerFactory.class.getName(), factory, null);
     }
 

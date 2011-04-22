@@ -10,27 +10,27 @@ import org.osgi.framework.ServiceRegistration;
 
 /**
  *
- * @author mathieu
+ * @author Mathieu ANCELIN - SERLI (mathieu.ancelin@serli.com)
  */
 public interface CDIContainer {
 
-    void fire(InterBundleEvent event);
-
-    Bundle getBundle();
-
-    Collection<ServiceRegistration> getRegistrations();
-
     boolean initialize(CDIContainers containers);
 
-    void shutdown();
-
+    boolean shutdown();
+    
     boolean isStarted();
+
+    void fire(InterBundleEvent event);
+
+    Bundle getBundle();    
 
     BeanManager getBeanManager();
 
     Event getEvent();
 
     Instance<Object> getInstance();
+
+    Collection<ServiceRegistration> getRegistrations();
 
     void setRegistrations(Collection<ServiceRegistration> registrations);
 

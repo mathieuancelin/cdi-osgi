@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.jboss.weld.environment.osgi;
 
 import java.util.Collection;
@@ -20,7 +16,7 @@ import org.osgi.framework.ServiceRegistration;
 
 /**
  *
- * @author mathieu
+ * @author Mathieu ANCELIN - SERLI (mathieu.ancelin@serli.com)
  */
 public class WeldCDIContainer implements CDIContainer {
 
@@ -49,8 +45,8 @@ public class WeldCDIContainer implements CDIContainer {
     }
 
     @Override
-    public void shutdown() {
-        container.shutdown();
+    public boolean shutdown() {
+        return container.shutdown();
     }
 
     @Override

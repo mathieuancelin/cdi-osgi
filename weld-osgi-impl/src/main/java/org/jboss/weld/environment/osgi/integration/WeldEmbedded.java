@@ -4,6 +4,7 @@ import java.awt.Event;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.BeanManager;
 
@@ -72,7 +73,8 @@ public class WeldEmbedded {
             }
 
             @Override
-            public void shutdown() {
+            public boolean shutdown() {
+                return true;
             }
 
             @Override
@@ -107,9 +109,10 @@ public class WeldEmbedded {
             }, new CDIContainers() {
 
             @Override
-            public Collection<CDIContainer> getContainers() {
-                return Collections.emptyList();
+            public Iterator<CDIContainer> iterator() {
+                return Collections.<CDIContainer>emptyList().iterator();
             }
+
         });
         if (!set) {
             CDIOSGiExtension.currentBundle.remove();

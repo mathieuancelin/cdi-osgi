@@ -3,6 +3,7 @@ package org.osgi.cdi.impl.integration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.enterprise.event.Event;
@@ -25,11 +26,9 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
 /**
- * Created by IntelliJ IDEA.
- * User: guillaume
- * Date: 27/01/11
- * Time: 22:27
- * To change this template use File | Settings | File Templates.
+ *
+ * @author Guillaume Sauthier
+ * @author Mathieu ANCELIN - SERLI (mathieu.ancelin@serli.com)
  */
 public class IntegrationActivator implements BundleActivator, BundleListener, CDIContainers, ServiceListener {
 
@@ -59,7 +58,6 @@ public class IntegrationActivator implements BundleActivator, BundleListener, CD
 
     public void startCDIOSGi() throws Exception {
         started.set(true);
-        ((CDIContainerFactory) context.getService(factoryRef)).init();
         managed = new HashMap<Long, CDIContainer>();
         for (Bundle bundle : context.getBundles()) {
             if (Bundle.ACTIVE == bundle.getState()) {
@@ -71,9 +69,6 @@ public class IntegrationActivator implements BundleActivator, BundleListener, CD
 
     public void stopCDIOSGi() throws Exception {
         started.set(false);
-        if (factoryRef != null) {
-            ((CDIContainerFactory) context.getService(factoryRef)).shutdown();
-        }
         for (Bundle bundle : context.getBundles()) {
             CDIContainer holder = managed.get(bundle.getBundleId());
             if (holder != null) {
@@ -154,11 +149,6 @@ public class IntegrationActivator implements BundleActivator, BundleListener, CD
     }
 
     @Override
-    public Collection<CDIContainer> getContainers() {
-        return managed.values();
-    }
-
-    @Override
     public void serviceChanged(ServiceEvent event) {
         try {
             ServiceReference[] refs = context.getServiceReferences(CDIContainerFactory.class.getName(), null);
@@ -176,5 +166,10 @@ public class IntegrationActivator implements BundleActivator, BundleListener, CD
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public Iterator<CDIContainer> iterator() {
+        return managed.values().iterator();
     }
 }
