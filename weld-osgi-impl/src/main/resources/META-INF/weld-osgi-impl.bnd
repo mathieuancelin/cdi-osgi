@@ -1,0 +1,59 @@
+Embed-Dependency *; scope=compile; inline=true; artifactId=!cdi-osgi-api|cdi-osgi-impl|jboss-interceptor-api|javax.inject|jsr250-api|cdi-api|el-api, \
+                 slf4j-jdk14; inline=true
+
+-exportcontents org.jboss.weld.context; \
+                org.jboss.weld.ejb; \
+                org.jboss.weld.bean; \
+                org.jboss.weld.bean.builtin; \
+                org.jboss.weld.bean.proxy; \
+                org.jboss.weld.environment.osgi; \
+                org.jboss.weld.environment.osgi.integration; \
+                org.jboss.weld.environment.osgi.integration.discovery; \
+                org.jboss.weld.environment.osgi.integration.discovery.bundle; \
+                org.jboss.weld.bootstrap; \
+                org.jboss.weld.bootstrap.*; \
+                org.jboss.weld.*.api.*; \
+                org.jboss.weld.*.spi.*; \
+                org.jboss.weld; \
+                org.jboss.weld.event; \
+                org.jboss.weld.injection; \
+                org.jboss.weld.introspector; \
+                org.jboss.weld.introspector.jlr; \
+                org.jboss.weld.manager; \
+                org.jboss.weld.servlet; \
+                org.jboss.weld.util; \
+                org.jboss.interceptor.*; \
+                javassist.*; \
+                org.jboss.weld.el; version=1.0, \
+                org.jboss.weld.jsf; version=1.0
+
+Import-Package javax.annotation; org.slf4j; org.slf4j.spi; org.slf4j.helpers; version=1.5.10; resolution:=optional, \
+               ch.qos.cal10n; version=0.7.2; resolution:=optional,
+               org.osgi.cdi.api.extension; \
+               org.osgi.cdi.api.extension.annotation; \
+               org.osgi.cdi.api.extension.events; \
+               org.osgi.cdi.api.integration; \
+               javax.el; \
+               javax.inject; \
+               javax.decorator; \
+               javax.annotation; \
+               javax.interceptor; \
+               javax.enterprise; \
+               javax.enterprise.context; \
+               javax.enterprise.context.spi; \
+               javax.enterprise.event; \
+               javax.enterprise.inject; \
+               javax.enterprise.inject.spi; \
+               javax.enterprise.util
+
+Export-Package  org.jboss.weld.environment.osgi; \
+                org.jboss.weld.environment.osgi.integration; \
+                org.jboss.weld.environment.osgi.integration.discovery; \
+                org.jboss.weld.environment.osgi.integration.discovery.bundle; \
+
+Private-Package !javax.interceptor.*, \
+                org.slf4j.*; -split-package:=merge-first, \
+                ch.qos.cal10n.*
+
+DynamicImport-Package *
+Bundle-Activator org.jboss.weld.environment.osgi.Activator
