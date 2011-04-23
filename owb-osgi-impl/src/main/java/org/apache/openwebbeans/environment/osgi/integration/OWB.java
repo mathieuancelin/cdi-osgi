@@ -1,6 +1,7 @@
 package org.apache.openwebbeans.environment.osgi.integration;
 
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -60,11 +61,15 @@ public class OWB {
         // -------------
         boolean set = CDIOSGiExtension.currentBundle.get() != null;
         CDIOSGiExtension.currentBundle.set(bundle.getBundleId());
-        try {         
+        try {
+            Enumeration beansXml = bundle.findEntries("META-INF", "beans.xml", true);
+            if (beansXml == null) {
+                return started;
+            }
             lifecycle = WebBeansContext.currentInstance().getService(ContainerLifecycle.class);
             OSGiScanner service = (OSGiScanner) WebBeansContext.currentInstance().getScannerService();
             service.setBundle(bundle);
-            lifecycle.startApplication(null);
+            lifecycle.startApplication(bundle);
             System.out.println("Starting Weld container for bundle " + bundle.getSymbolicName());
             manager = lifecycle.getBeanManager();
             Set<Class<?>> classes = service.getBeanClasses();
