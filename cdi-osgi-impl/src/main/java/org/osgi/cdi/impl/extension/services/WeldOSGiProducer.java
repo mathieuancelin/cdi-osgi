@@ -18,7 +18,6 @@ import javax.enterprise.inject.spi.InjectionPoint;
 import org.osgi.cdi.api.extension.BundleState;
 import org.osgi.cdi.api.extension.Registrations;
 import org.osgi.cdi.api.extension.Service;
-import org.osgi.cdi.api.extension.Services;
 import org.osgi.cdi.api.extension.annotation.BundleDataFile;
 import org.osgi.cdi.api.extension.annotation.BundleHeader;
 import org.osgi.cdi.api.extension.annotation.BundleHeaders;
@@ -87,15 +86,6 @@ public class WeldOSGiProducer {
     }
 
     @Produces @Required
-    public <T> Services<T> getOSGiRequiredServices(BundleHolder holder, 
-            CDIOSGiExtension extension, InjectionPoint p) {
-
-        extension.getRequiredOsgiServiceDependencies().add((Class)
-            ((ParameterizedType) p.getType()).getActualTypeArguments()[0]);
-        return getOSGiServices(holder, p);
-    }
-
-    @Produces @Required
     public <T> Service<T> getOSGiRequiredService(BundleHolder holder, 
             CDIOSGiExtension extension, InjectionPoint p) {
         
@@ -105,15 +95,9 @@ public class WeldOSGiProducer {
     }
 
     @Produces
-    public <T> Services<T> getOSGiServices(BundleHolder holder, InjectionPoint p) {
-        return new ServicesImpl<T>(((ParameterizedType)p.getType()).getActualTypeArguments()[0],
-               holder.getContext());
-    }
-
-    @Produces
     public <T> Service<T> getOSGiService(BundleHolder holder, InjectionPoint p) {
         return new ServiceImpl<T>(((ParameterizedType)p.getType()).getActualTypeArguments()[0],
-                holder.getBundle());
+                holder.getContext());
     }
 
     @Produces

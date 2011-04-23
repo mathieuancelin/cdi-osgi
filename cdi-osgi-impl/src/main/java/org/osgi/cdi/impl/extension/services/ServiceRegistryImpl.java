@@ -22,7 +22,6 @@ import org.osgi.cdi.api.extension.BundleState;
 import org.osgi.cdi.api.extension.Registration;
 import org.osgi.cdi.api.extension.Service;
 import org.osgi.cdi.api.extension.ServiceRegistry;
-import org.osgi.cdi.api.extension.Services;
 import org.osgi.cdi.api.extension.events.AbstractServiceEvent;
 import org.osgi.cdi.api.extension.events.BundleContainerInitialized;
 import org.osgi.cdi.api.extension.events.Invalid;
@@ -95,13 +94,13 @@ public class ServiceRegistryImpl implements ServiceRegistry {
     }
 
     @Override
-    public <T> Services<T> getServiceReferences(Class<T> contract) {
-        return new ServicesImpl<T>(contract, registry);
+    public <T> Service<T> getServiceReferences(Class<T> contract) {
+        return getServiceReference(contract);
     }
 
     @Override
     public <T> Service<T> getServiceReference(Class<T> contract) {
-        return new ServiceImpl<T>(contract, bundle);
+        return new ServiceImpl<T>(contract, registry);
     }
 
     @PreDestroy
