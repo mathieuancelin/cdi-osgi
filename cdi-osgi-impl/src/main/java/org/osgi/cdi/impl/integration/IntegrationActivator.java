@@ -82,7 +82,8 @@ public class IntegrationActivator implements BundleActivator, BundleListener, CD
     public void bundleChanged(BundleEvent event) {
         switch (event.getType()) {
             case BundleEvent.STARTED:
-                startManagement(event.getBundle());
+                if (started.get())
+                    startManagement(event.getBundle());
                 break;
             case BundleEvent.STOPPED:
                 stopManagement(event.getBundle());
