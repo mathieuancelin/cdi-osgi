@@ -16,6 +16,8 @@
         <module>cdi-osgi-api</module>
         <module>weld-osgi-impl</module>
         <module>cdi-osgi-impl</module>
+		<module>paint</module>
+		<module>container</module>
     </modules>
 
     <repositories>

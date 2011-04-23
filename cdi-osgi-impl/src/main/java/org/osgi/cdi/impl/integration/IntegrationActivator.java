@@ -117,12 +117,11 @@ public class IntegrationActivator implements BundleActivator, BundleListener, CD
         //System.out.println("Starting management for bundle " + bundle);
         CDIContainer holder = ((CDIContainerFactory) context.getService(factoryRef)).container(bundle);
         holder.initialize(this);
-        ServicePublisher publisher = new ServicePublisher(holder.getBeanClasses(),
+        if (holder.isStarted()) {
+            ServicePublisher publisher = new ServicePublisher(holder.getBeanClasses(),
                 bundle, holder.getInstance(),
                 ((CDIContainerFactory) context.getService(factoryRef)).getContractBlacklist());
-        publisher.registerAndLaunchComponents();
-        if (holder.isStarted()) {
-
+            publisher.registerAndLaunchComponents();
             Collection<ServiceRegistration> regs = new ArrayList<ServiceRegistration>();
 
             BundleContext bundleContext = bundle.getBundleContext();

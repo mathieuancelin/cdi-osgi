@@ -39,6 +39,7 @@ public class Weld {
     private boolean hasShutdownBeenCalled = false;
     private BundleBeanDeploymentArchiveFactory factory;
     private WeldManager manager;
+    private Collection<String> beanClasses;
 
     public Weld(Bundle bundle) {
         this.bundle = bundle;
@@ -80,7 +81,7 @@ public class Weld {
 
             // Get this Bundle BeanManager
             manager = bootstrap.getManager(deployment.getBeanDeploymentArchive());
-
+            beanClasses = deployment.getBeanDeploymentArchive().getBeanClasses();
             manager.instance().select(BundleHolder.class).get().setBundle(bundle);
             manager.instance().select(BundleHolder.class).get().setContext(bundle.getBundleContext());
             manager.instance().select(ContainerObserver.class).get().setContainers(containers);
@@ -309,6 +310,6 @@ public class Weld {
     }
 
     public Collection<String> getBeanClasses() {
-        return deployment.getBeanDeploymentArchive().getBeanClasses();
+        return beanClasses;
     }
 }
