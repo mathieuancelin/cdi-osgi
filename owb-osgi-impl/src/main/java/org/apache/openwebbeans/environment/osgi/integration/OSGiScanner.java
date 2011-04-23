@@ -45,6 +45,13 @@ public class OSGiScanner implements ScannerService {
 
     @Override
     public void release() {
+//        beanClasses = new HashSet<Class<?>>();
+//        beanXMLs = new HashSet<String>();
+//        beanArchiveJarNames = new HashSet<String>();
+//        classAnnotations.clear();
+    }
+
+    public void release2() {
         beanClasses = new HashSet<Class<?>>();
         beanXMLs = new HashSet<String>();
         beanArchiveJarNames = new HashSet<String>();
@@ -56,12 +63,12 @@ public class OSGiScanner implements ScannerService {
         if (bundle == null) {
             throw new RuntimeException("Bundle can't be null");
         }
-        System.out.println("Scanning ....");
         // TODO : use BundleScanner API
         Enumeration beansXml = bundle.findEntries("META-INF", "beans.xml", true);
         if (beansXml != null) {
             while (beansXml.hasMoreElements()) {
-                beanXMLs.add(((URL) beansXml.nextElement()).toExternalForm());
+                URL url = ((URL) beansXml.nextElement());
+                beanXMLs.add(url.toString());
             }
             Enumeration foundBeanClasses = bundle.findEntries("", "*.class", true);
             if (foundBeanClasses != null) {
@@ -71,6 +78,7 @@ public class OSGiScanner implements ScannerService {
                     try {
                         beanClasses.add(bundle.loadClass(clazz));
                     } catch (Throwable ex) {
+                        ex.printStackTrace();
                     }
                 }
             }

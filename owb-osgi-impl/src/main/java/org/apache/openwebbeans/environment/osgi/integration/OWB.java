@@ -6,11 +6,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.enterprise.context.spi.CreationalContext;
 
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.InjectionTarget;
 import org.apache.webbeans.config.WebBeansContext;
 import org.apache.webbeans.spi.ContainerLifecycle;
 
@@ -70,7 +72,7 @@ public class OWB {
             OSGiScanner service = (OSGiScanner) WebBeansContext.currentInstance().getScannerService();
             service.setBundle(bundle);
             lifecycle.startApplication(bundle);
-            System.out.println("Starting Weld container for bundle " + bundle.getSymbolicName());
+            System.out.println("Starting OWB container for bundle " + bundle.getSymbolicName());
             manager = lifecycle.getBeanManager();
             Set<Class<?>> classes = service.getBeanClasses();
             Set<String> classesName = new HashSet<String>();
@@ -78,9 +80,14 @@ public class OWB {
                 classesName.add(clazz.getName());
             }
             beanClasses = classesName;
-            Bean<?> bean = manager.getBeans(Instance.class).iterator().next();
-            instance = (Instance) lifecycle.getBeanManager().getReference(bean,
-                    Instance.class, manager.createCreationalContext(bean));
+            service.release2();
+            AnnotatedType annoted = manager.createAnnotatedType(InstanceHolder.class);
+            InjectionTarget it = manager.createInjectionTarget(annoted);
+            CreationalContext<?> cc = manager.createCreationalContext(null);
+            InstanceHolder h = (InstanceHolder) it.produce(cc);
+            it.inject(instance, cc);
+            it.postConstruct(instance);
+            instance = h.getInstance();
             instance.select(BundleHolder.class).get().setBundle(bundle);
             instance.select(BundleHolder.class).get().setContext(bundle.getBundleContext());
             instance.select(ContainerObserver.class).get().setContainers(containers);
