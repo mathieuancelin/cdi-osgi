@@ -1,7 +1,5 @@
-Export-Package org.osgi.cdi.impl; \
-               org.osgi.cdi.impl.extension; \
-               org.osgi.cdi.impl.extension.services; \
-               org.osgi.cdi.impl.integration
+Export-Package org.osgi.cdi.impl.extension; \
+               org.osgi.cdi.impl.extension.services
 
 Import-Package org.osgi.cdi.api.extension; \
                org.osgi.cdi.api.extension.annotation; \
