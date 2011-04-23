@@ -1,5 +1,6 @@
 package org.osgi.cdi.api.integration;
 
+import java.util.Set;
 import org.osgi.framework.Bundle;
 
 /**
@@ -11,6 +12,8 @@ public interface CDIContainerFactory {
     Class<? extends CDIContainerFactory> delegateClass();
 
     String getID();
+
+    Set<String> getContractBlacklist();
 
     CDIContainer container(Bundle bundle);
 }

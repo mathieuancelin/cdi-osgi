@@ -30,6 +30,8 @@ public interface CDIContainer {
 
     Instance<Object> getInstance();
 
+    Collection<String> getBeanClasses();
+
     Collection<ServiceRegistration> getRegistrations();
 
     void setRegistrations(Collection<ServiceRegistration> registrations);

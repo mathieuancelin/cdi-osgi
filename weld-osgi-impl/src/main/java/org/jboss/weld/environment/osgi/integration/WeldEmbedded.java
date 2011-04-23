@@ -106,6 +106,11 @@ public class WeldEmbedded {
             public void setRegistrations(Collection<ServiceRegistration> registrations) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
+
+            @Override
+            public Collection<String> getBeanClasses() {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
             }, new CDIContainers() {
 
             @Override

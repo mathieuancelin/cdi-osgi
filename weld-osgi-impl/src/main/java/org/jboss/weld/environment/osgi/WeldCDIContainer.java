@@ -87,4 +87,9 @@ public class WeldCDIContainer implements CDIContainer {
     public Instance<Object> getInstance() {
         return container.getInstance();
     }
+
+    @Override
+    public Collection<String> getBeanClasses() {
+        return container.getBeanClasses();
+    }
 }

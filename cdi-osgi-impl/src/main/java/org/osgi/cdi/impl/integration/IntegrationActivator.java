@@ -14,6 +14,7 @@ import org.osgi.cdi.api.integration.CDIContainers;
 import org.osgi.cdi.api.integration.CDIContainer;
 import org.osgi.cdi.api.integration.CDIContainerFactory;
 import org.osgi.cdi.impl.extension.CDIOSGiExtension;
+import org.osgi.cdi.impl.extension.ServicePublisher;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
@@ -116,7 +117,10 @@ public class IntegrationActivator implements BundleActivator, BundleListener, CD
         //System.out.println("Starting management for bundle " + bundle);
         CDIContainer holder = ((CDIContainerFactory) context.getService(factoryRef)).container(bundle);
         holder.initialize(this);
-
+        ServicePublisher publisher = new ServicePublisher(holder.getBeanClasses(),
+                bundle, holder.getInstance(),
+                ((CDIContainerFactory) context.getService(factoryRef)).getContractBlacklist());
+        publisher.registerAndLaunchComponents();
         if (holder.isStarted()) {
 
             Collection<ServiceRegistration> regs = new ArrayList<ServiceRegistration>();
