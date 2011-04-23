@@ -12,7 +12,6 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import org.apache.webbeans.config.WebBeansContext;
 import org.apache.webbeans.spi.ContainerLifecycle;
-import org.apache.webbeans.spi.ScannerService;
 
 import org.osgi.cdi.api.extension.events.BundleContainerInitialized;
 import org.osgi.cdi.api.extension.events.BundleContainerShutdown;
@@ -63,7 +62,8 @@ public class OWB {
         CDIOSGiExtension.currentBundle.set(bundle.getBundleId());
         try {         
             lifecycle = WebBeansContext.currentInstance().getService(ContainerLifecycle.class);
-            ScannerService service = WebBeansContext.currentInstance().getScannerService();
+            OSGiScanner service = (OSGiScanner) WebBeansContext.currentInstance().getScannerService();
+            service.setBundle(bundle);
             lifecycle.startApplication(null);
             System.out.println("Starting Weld container for bundle " + bundle.getSymbolicName());
             manager = lifecycle.getBeanManager();

@@ -1,6 +1,5 @@
 package org.apache.openwebbeans.environment.osgi;
 
-import org.osgi.cdi.api.integration.CDIContainer;
 import org.osgi.cdi.api.integration.CDIContainerFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -17,14 +16,11 @@ public class Activator implements BundleActivator {
 
     @Override
     public void start(BundleContext context) throws Exception {
-        //reg = context.registerService(CDIContainerFactory.class.getName(), factory, null);
-        CDIContainer cont = factory.container(context.getBundle());
-        cont.initialize(null);
-        System.out.println(cont.getInstance());
+        reg = context.registerService(CDIContainerFactory.class.getName(), factory, null);
     }
 
     @Override
     public void stop(BundleContext context) throws Exception {
-        //reg.unregister();
+        reg.unregister();
     }
 }
