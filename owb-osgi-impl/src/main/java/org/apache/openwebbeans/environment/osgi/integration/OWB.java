@@ -129,7 +129,7 @@ public class OWB {
                         t.printStackTrace();
                     }
                     try {
-                         lifecycle.stopApplication(null);
+                         lifecycle.stopApplication(bundle);
                     } catch (Throwable t) {
                     }
                     started = false;
