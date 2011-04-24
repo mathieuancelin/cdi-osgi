@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import javax.servlet.ServletContext;
 import org.apache.webbeans.exception.WebBeansDeploymentException;
 import org.apache.webbeans.spi.BDABeansXmlScanner;
 import org.apache.webbeans.spi.ScannerService;
@@ -22,7 +21,6 @@ import org.osgi.framework.Bundle;
  */
 public class OSGiScanner implements ScannerService {
 
-    protected ServletContext servletContext = null;
     /** All classes which have to be scanned for Bean information */
     private Set<Class<?>> beanClasses = new HashSet<Class<?>>();
     /** the paths of all META-INF/beans.xml files */
@@ -38,9 +36,9 @@ public class OSGiScanner implements ScannerService {
 
     @Override
     public void init(Object object) {
-        if (object instanceof ServletContext) {
-            servletContext = (ServletContext) object;
-        }
+//        if (object instanceof ServletContext) {
+//            servletContext = (ServletContext) object;
+//        }
     }
 
     @Override
