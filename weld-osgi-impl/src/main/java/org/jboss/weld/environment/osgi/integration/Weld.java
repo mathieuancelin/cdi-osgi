@@ -14,16 +14,10 @@ import org.jboss.weld.bootstrap.api.Bootstrap;
 import org.jboss.weld.environment.osgi.integration.discovery.bundle.BundleBeanDeploymentArchiveFactory;
 import org.jboss.weld.environment.osgi.integration.discovery.bundle.BundleDeployment;
 import org.jboss.weld.manager.api.WeldManager;
-import org.osgi.cdi.api.extension.events.BundleContainerInitialized;
-import org.osgi.cdi.api.extension.events.BundleContainerShutdown;
 import org.osgi.cdi.api.integration.CDIContainer;
 import org.osgi.cdi.api.integration.CDIContainers;
 import org.osgi.cdi.impl.extension.CDIOSGiExtension;
-import org.osgi.cdi.impl.extension.services.BundleHolder;
-import org.osgi.cdi.impl.extension.services.ContainerObserver;
-import org.osgi.cdi.impl.extension.services.RegistrationsHolder;
 import org.osgi.framework.Bundle;
-import org.osgi.framework.ServiceRegistration;
 
 /**
  *
@@ -78,15 +72,9 @@ public class Weld {
             bootstrap.deployBeans();
             bootstrap.validateBeans();
             bootstrap.endInitialization();
-
             // Get this Bundle BeanManager
             manager = bootstrap.getManager(deployment.getBeanDeploymentArchive());
             beanClasses = deployment.getBeanDeploymentArchive().getBeanClasses();
-            manager.instance().select(BundleHolder.class).get().setBundle(bundle);
-            manager.instance().select(BundleHolder.class).get().setContext(bundle.getBundleContext());
-            manager.instance().select(ContainerObserver.class).get().setContainers(containers);
-            manager.instance().select(ContainerObserver.class).get().setCurrentContainer(container);
-            manager.fireEvent(new BundleContainerInitialized(bundle.getBundleContext()));
             started = true;
         } catch (Throwable t) {
             t.printStackTrace();
@@ -104,28 +92,11 @@ public class Weld {
     }
 
     public boolean shutdown() {
-        // TODO this should also be part of the extension ...
         if (started) {
             synchronized (this) {
                 if (!hasShutdownBeenCalled) {
                     System.out.println("Stopping Weld container for bundle " + bundle.getSymbolicName());
                     hasShutdownBeenCalled = true;
-                    try {
-                        manager.fireEvent(new BundleContainerShutdown(bundle.getBundleContext()));
-                        // unregistration for managed services. It should be done by the OSGi framework
-                        RegistrationsHolder holder = manager.instance().select(RegistrationsHolder.class).get();
-                        for (ServiceRegistration r : holder.getRegistrations()) {
-                            try {
-                                r.unregister();
-                            } catch (Exception e) {
-                                // the service is already unregistered if shutdown is called when bundle is stopped
-                                // but with a manual boostrap, you can't be sure
-                                //System.out.println("Service already unregistered.");
-                            }
-                        }
-                    } catch (Throwable t) {
-                        t.printStackTrace();
-                    }
                     try {
                         bootstrap.shutdown();
                     } catch (Throwable t) {}

@@ -9,12 +9,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.BeanManager;
+import org.osgi.cdi.api.extension.events.BundleContainerInitialized;
+import org.osgi.cdi.api.extension.events.BundleContainerShutdown;
 
 import org.osgi.cdi.api.integration.CDIContainers;
 import org.osgi.cdi.api.integration.CDIContainer;
 import org.osgi.cdi.api.integration.CDIContainerFactory;
 import org.osgi.cdi.impl.extension.CDIOSGiExtension;
-import org.osgi.cdi.impl.extension.ServicePublisher;
+import org.osgi.cdi.impl.extension.services.BundleHolder;
+import org.osgi.cdi.impl.extension.services.ContainerObserver;
+import org.osgi.cdi.impl.extension.services.RegistrationsHolder;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
@@ -104,6 +108,22 @@ public class IntegrationActivator implements BundleActivator, BundleListener, CD
                     // Ignore
                 }
             }
+            try {
+                holder.getBeanManager().fireEvent(new BundleContainerShutdown(bundle.getBundleContext()));
+                // unregistration for managed services. It should be done by the OSGi framework
+                RegistrationsHolder regsHolder = holder.getInstance().select(RegistrationsHolder.class).get();
+                for (ServiceRegistration r : regsHolder.getRegistrations()) {
+                    try {
+                        r.unregister();
+                    } catch (Exception e) {
+                        // the service is already unregistered if shutdown is called when bundle is stopped
+                        // but with a manual boostrap, you can't be sure
+                        //System.out.println("Service already unregistered.");
+                    }
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
             holder.shutdown();
             managed.remove(bundle.getBundleId());
         }
@@ -119,9 +139,18 @@ public class IntegrationActivator implements BundleActivator, BundleListener, CD
         CDIContainer holder = ((CDIContainerFactory) context.getService(factoryRef)).container(bundle);
         holder.initialize(this);
         if (holder.isStarted()) {
+
+            // setting contextual informations
+            holder.getInstance().select(BundleHolder.class).get().setBundle(bundle);
+            holder.getInstance().select(BundleHolder.class).get().setContext(bundle.getBundleContext());
+            holder.getInstance().select(ContainerObserver.class).get().setContainers(this);
+            holder.getInstance().select(ContainerObserver.class).get().setCurrentContainer(holder);
+            // fire container start
+            holder.getBeanManager().fireEvent(new BundleContainerInitialized(bundle.getBundleContext()));
             ServicePublisher publisher = new ServicePublisher(holder.getBeanClasses(),
                 bundle, holder.getInstance(),
                 ((CDIContainerFactory) context.getService(factoryRef)).getContractBlacklist());
+            // registering publishable services
             publisher.registerAndLaunchComponents();
             Collection<ServiceRegistration> regs = new ArrayList<ServiceRegistration>();
 

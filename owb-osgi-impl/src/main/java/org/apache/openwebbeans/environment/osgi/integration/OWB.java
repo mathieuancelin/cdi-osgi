@@ -16,16 +16,10 @@ import javax.enterprise.inject.spi.InjectionTarget;
 import org.apache.webbeans.config.WebBeansContext;
 import org.apache.webbeans.spi.ContainerLifecycle;
 
-import org.osgi.cdi.api.extension.events.BundleContainerInitialized;
-import org.osgi.cdi.api.extension.events.BundleContainerShutdown;
 import org.osgi.cdi.api.integration.CDIContainer;
 import org.osgi.cdi.api.integration.CDIContainers;
 import org.osgi.cdi.impl.extension.CDIOSGiExtension;
-import org.osgi.cdi.impl.extension.services.BundleHolder;
-import org.osgi.cdi.impl.extension.services.ContainerObserver;
-import org.osgi.cdi.impl.extension.services.RegistrationsHolder;
 import org.osgi.framework.Bundle;
-import org.osgi.framework.ServiceRegistration;
 
 /**
  *
@@ -88,11 +82,6 @@ public class OWB {
             it.inject(h, cc);
             it.postConstruct(h);
             instance = h.getInstance();
-            instance.select(BundleHolder.class).get().setBundle(bundle);
-            instance.select(BundleHolder.class).get().setContext(bundle.getBundleContext());
-            instance.select(ContainerObserver.class).get().setContainers(containers);
-            instance.select(ContainerObserver.class).get().setCurrentContainer(container);
-            manager.fireEvent(new BundleContainerInitialized(bundle.getBundleContext()));
             started = true;
         } catch (Throwable t) {
             t.printStackTrace();
@@ -106,28 +95,11 @@ public class OWB {
     }
 
     public boolean shutdown() {
-        // TODO this should also be part of the extension ...
         if (started) {
             synchronized (this) {
                 if (!hasShutdownBeenCalled) {
-                    System.out.println("Stopping Weld container for bundle " + bundle.getSymbolicName());
+                    System.out.println("Stopping OWB container for bundle " + bundle.getSymbolicName());
                     hasShutdownBeenCalled = true;
-                    try {
-                        manager.fireEvent(new BundleContainerShutdown(bundle.getBundleContext()));
-                        // unregistration for managed services. It should be done by the OSGi framework
-                        RegistrationsHolder holder = instance.select(RegistrationsHolder.class).get();
-                        for (ServiceRegistration r : holder.getRegistrations()) {
-                            try {
-                                r.unregister();
-                            } catch (Exception e) {
-                                // the service is already unregistered if shutdown is called when bundle is stopped
-                                // but with a manual boostrap, you can't be sure
-                                //System.out.println("Service already unregistered.");
-                            }
-                        }
-                    } catch (Throwable t) {
-                        t.printStackTrace();
-                    }
                     try {
                          lifecycle.stopApplication(bundle);
                     } catch (Throwable t) {
