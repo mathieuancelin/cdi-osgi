@@ -64,8 +64,8 @@ public class WeldCDIContainer implements CDIContainer {
     }
 
     @Override
-    public boolean initialize(CDIContainers containers) {
-        return container.initialize(this, containers);
+    public boolean initialize() {
+        return container.initialize();
     }
 
     @Override

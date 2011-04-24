@@ -55,70 +55,7 @@ public class WeldEmbedded {
         } catch (Throwable t) {
             // Ignore
         }
-        embedded.weld.initialize(new CDIContainer() {
-
-                @Override
-                public void fire(InterBundleEvent event) {
-                    // nothing to do
-                }
-
-            @Override
-            public Bundle getBundle() {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public Collection<ServiceRegistration> getRegistrations() {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public boolean shutdown() {
-                return true;
-            }
-
-            @Override
-            public boolean initialize(CDIContainers containers) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public boolean isStarted() {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public BeanManager getBeanManager() {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public javax.enterprise.event.Event getEvent() {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public Instance<Object> getInstance() {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void setRegistrations(Collection<ServiceRegistration> registrations) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public Collection<String> getBeanClasses() {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-            }, new CDIContainers() {
-
-            @Override
-            public Iterator<CDIContainer> iterator() {
-                return Collections.<CDIContainer>emptyList().iterator();
-            }
-
-        });
+        embedded.weld.initialize();
         if (!set) {
             CDIOSGiExtension.currentBundle.remove();
         }

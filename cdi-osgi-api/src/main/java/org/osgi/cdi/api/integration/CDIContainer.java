@@ -14,7 +14,7 @@ import org.osgi.framework.ServiceRegistration;
  */
 public interface CDIContainer {
 
-    boolean initialize(CDIContainers containers);
+    boolean initialize();
 
     boolean shutdown();
     

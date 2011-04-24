@@ -48,7 +48,7 @@ public class OWB {
      * Boots OWB and creates and returns a CDIContainerImpl instance, through which
      * beans and events can be accessed.
      */
-    public boolean initialize(CDIContainer container, CDIContainers containers) {
+    public boolean initialize() {
         started = false;
         // ugly hack to make jboss interceptors works.
         // thank you Thread.currentThread().getContextClassLoader().loadClass()
@@ -129,5 +129,28 @@ public class OWB {
 
     public Collection<String> getBeanClasses() {
         return beanClasses;
+    }
+
+    private static class BridgeClassLoader extends ClassLoader {
+
+        private final ClassLoader delegate;
+        private final ClassLoader infra;
+
+        public BridgeClassLoader(ClassLoader delegate, ClassLoader infraClassLoader) {
+            this.delegate = delegate;
+            this.infra = infraClassLoader;
+        }
+
+        @Override
+        public Class<?> loadClass(String name) throws ClassNotFoundException {
+            Class<?> loadedClass = null;
+            try {
+                loadedClass = delegate.loadClass(name);
+            } catch (ClassNotFoundException cnfe) {
+                // todo : filter on utils class only
+                loadedClass = infra.loadClass(name);
+            }
+            return loadedClass;
+        }
     }
 }

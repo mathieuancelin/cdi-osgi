@@ -137,7 +137,7 @@ public class IntegrationActivator implements BundleActivator, BundleListener, CD
         CDIOSGiExtension.currentBundle.set(bundle.getBundleId());
         //System.out.println("Starting management for bundle " + bundle);
         CDIContainer holder = ((CDIContainerFactory) context.getService(factoryRef)).container(bundle);
-        holder.initialize(this);
+        holder.initialize();
         if (holder.isStarted()) {
 
             // setting contextual informations

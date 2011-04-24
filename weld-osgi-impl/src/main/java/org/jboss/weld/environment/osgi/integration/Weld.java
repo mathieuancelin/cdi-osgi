@@ -48,7 +48,7 @@ public class Weld {
      * Boots Weld and creates and returns a CDIContainerImpl instance, through which
      * beans and events can be accessed.
      */
-    public boolean initialize(CDIContainer container, CDIContainers containers) {
+    public boolean initialize() {
         started = false;
         // ugly hack to make jboss interceptors works.
         // thank you Thread.currentThread().getContextClassLoader().loadClass()
