@@ -85,8 +85,8 @@ public class OWB {
             InjectionTarget it = manager.createInjectionTarget(annoted);
             CreationalContext<?> cc = manager.createCreationalContext(null);
             InstanceHolder h = (InstanceHolder) it.produce(cc);
-            it.inject(instance, cc);
-            it.postConstruct(instance);
+            it.inject(h, cc);
+            it.postConstruct(h);
             instance = h.getInstance();
             instance.select(BundleHolder.class).get().setBundle(bundle);
             instance.select(BundleHolder.class).get().setContext(bundle.getBundleContext());
