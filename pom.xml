@@ -15,10 +15,12 @@
     <modules>
         <module>cdi-osgi-api</module>
         <module>weld-osgi-impl</module>
-<module>owb-osgi-impl</module>
+        <module>owb-osgi-impl</module>
         <module>cdi-osgi-impl</module>
-		<module>paint</module>
-		<module>container</module>
+        <module>paint</module>
+        <module>container</module>
+        <module>calculator</module>
+        <module>web</module>
     </modules>
 
     <repositories>
@@ -35,7 +37,6 @@
                 <updatePolicy>never</updatePolicy>
             </snapshots>
         </repository>
-
         <repository>
             <id>jboss-snapshots</id>
             <url>https://repository.jboss.org/nexus/content/repositories/snapshots/</url>
@@ -46,7 +47,6 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-
     </repositories>
 
     <build>
@@ -65,7 +65,6 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -75,8 +74,6 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
-
         </plugins>
-
     </build>
 </project>
