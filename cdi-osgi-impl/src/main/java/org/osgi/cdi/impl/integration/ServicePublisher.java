@@ -83,7 +83,7 @@ public class ServicePublisher {
                 for (Class contract : contracts) {
                     System.out.println("Registering OSGi service " + clazz.getName() + " as " + contract.getName());
                     registration = bundle.getBundleContext().registerService(
-                            contract.getName(), getProxy(contract, annotations, bundle), properties);
+                            contract.getName(), getProxy(contract, clazz, annotations, bundle), properties);
                 }
             } else {
                 // registering interfaces
@@ -97,7 +97,7 @@ public class ServicePublisher {
 //                                && !interf.getName().equals("javassist.util.proxy.ProxyObject")) {
                             System.out.println("Registering OSGi service " + clazz.getName() + " as " + interf.getName());
                             registration = bundle.getBundleContext().registerService(
-                                    interf.getName(), getProxy(interf, annotations, bundle), properties);
+                                    interf.getName(), getProxy(interf, clazz, annotations, bundle), properties);
                         }
                     }
                 } else {
@@ -159,11 +159,11 @@ public class ServicePublisher {
         return qualifiers;
     }
 
-    private <T> T getProxy(Class<T> clazz, Annotation[] qualifiers, Bundle bundle) {
-        return clazz.cast(
+    private <T> T getProxy(Class<T> interf, Class<? extends T> clazz, Annotation[] qualifiers, Bundle bundle) {
+        return interf.cast(
                 Proxy.newProxyInstance(
                 clazz.getClassLoader(),
-                new Class[]{clazz},
+                new Class[]{interf},
                 new LazyService(clazz, qualifiers, bundle)));
     }
 
