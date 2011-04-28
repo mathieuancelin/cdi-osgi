@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -36,12 +35,13 @@ import org.osgi.cdi.api.extension.events.ServiceDeparture;
 import org.osgi.framework.Bundle;
 
 @Singleton
-public class PaintFrame extends JFrame implements MouseListener {
+public class PaintFrame implements MouseListener {
 
     private static final int BOX = 54;
     private JToolBar toolbar;
     private String selected;
     private JPanel panel;
+    private JFrame frame;
 
     @Inject @Required private Service<ShapeProvider> registeredProviders;
 
@@ -58,22 +58,22 @@ public class PaintFrame extends JFrame implements MouseListener {
 
     @Inject
     public PaintFrame(Bundle bundle) {
-        super("PaintFrame for bundle " + bundle.getBundleId());
+        this.frame = new JFrame("PaintFrame for bundle " + bundle.getBundleId());
         toolbar = new JToolBar("Toolbar");
         panel = new JPanel();
         panel.setBackground(Color.WHITE);
         panel.setLayout(null);
         panel.setMinimumSize(new Dimension(400, 400));
         panel.addMouseListener(this);
-        getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(toolbar, BorderLayout.NORTH);
-        getContentPane().add(panel, BorderLayout.CENTER);
-        setSize(400, 400);
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        this.addWindowListener(new WindowAdapter() {
+        frame.getContentPane().setLayout(new BorderLayout());
+        frame.getContentPane().add(toolbar, BorderLayout.NORTH);
+        frame.getContentPane().add(panel, BorderLayout.CENTER);
+        frame.setSize(400, 400);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent evt) {
-                dispose();
+                frame.dispose();
             }
         });
     }
@@ -109,7 +109,7 @@ public class PaintFrame extends JFrame implements MouseListener {
                 panel.validate();
                 goneComponents.get(provider.getId()).clear();
             }
-            repaint();
+            frame.repaint();
         }
     }
 
@@ -135,8 +135,8 @@ public class PaintFrame extends JFrame implements MouseListener {
             if (sb.getActionCommand().equals(name)) {
                 toolbar.remove(i);
                 toolbar.invalidate();
-                validate();
-                repaint();
+                frame.validate();
+                frame.repaint();
                 break;
             }
         }
@@ -184,11 +184,11 @@ public class PaintFrame extends JFrame implements MouseListener {
         for (ShapeProvider provider : registeredProviders) {
             addShape(provider);
         }
-        this.setVisible(true);
+        frame.setVisible(true);
     }
 
     public void stop() {
-        this.dispose();
+        frame.dispose();
     }
 
     private class ShapeActionListener implements ActionListener {
