@@ -17,4 +17,9 @@ public class EnglandHotelProvider implements HotelProvider {
         hotels.add(new Hotel("The british Hotel", "London", "England"));
         return hotels;
     }
+
+    @Override
+    public String getCountry() {
+        return "England";
+    }
 }

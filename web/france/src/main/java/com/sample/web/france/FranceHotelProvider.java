@@ -17,4 +17,9 @@ public class FranceHotelProvider implements HotelProvider {
         hotels.add(new Hotel("Au bon Hotel", "Paris", "France"));
         return hotels;
     }
+
+    @Override
+    public String getCountry() {
+        return "France";
+    }
 }

@@ -17,4 +17,9 @@ public class SpainHotelProvider implements HotelProvider {
         hotels.add(new Hotel("Los Hostel", "Madrid", "Spain"));
         return hotels;
     }
+
+    @Override
+    public String getCountry() {
+        return "Spain";
+    }
 }

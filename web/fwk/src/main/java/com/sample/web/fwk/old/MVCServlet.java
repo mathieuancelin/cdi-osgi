@@ -102,9 +102,9 @@ public class MVCServlet extends HttpServlet {
                     if (in != null) {
                         in.close();
                     }
+                    out.close();
                 }
             } else {
-                resp.setContentType("text/html");
                 controllerName = controllerName.substring(1);
                 controllerName = controllerName.substring(0, controllerName.indexOf("/"));
                 String controllerMethod = requestURI.getPath().substring(1);
@@ -118,7 +118,7 @@ public class MVCServlet extends HttpServlet {
                     throw new IllegalStateException("You have to return a View");
                 }
                 View v = (View) m.invoke(controller);
-                out.println(v.render());
+                v.render(resp);
             }
         } catch (Exception ex) {
             //ex.printStackTrace();
@@ -143,8 +143,8 @@ public class MVCServlet extends HttpServlet {
                     out.println("<br/>");
                 }
             }
+            out.close();
         }
-        out.close();
     }
 
     public static class ServeAnnotation
