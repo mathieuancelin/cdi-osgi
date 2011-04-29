@@ -2,7 +2,7 @@ package com.sample.web.app;
 
 import com.sample.web.api.Hotel;
 import com.sample.web.api.HotelProvider;
-import com.sample.web.fwk.View;
+import com.sample.web.fwk.view.View;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,9 +35,9 @@ public class HotelsControllerServlet extends HttpServlet {
         context.put("hotels", hotels);
         context.put("providers", providers);
         if (app.isValid()) {
-            new View("all.xhtml", context, getClass()).render(resp);
+            new View("hotel/all.xhtml", context, getClass()).render(resp);
         } else {
-            new View("none.xhtml", context, getClass()).render(resp);
+            new View("hotel/none.xhtml", context, getClass()).render(resp);
         }
     }
 
