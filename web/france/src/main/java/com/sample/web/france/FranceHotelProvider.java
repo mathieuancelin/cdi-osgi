@@ -15,6 +15,8 @@ public class FranceHotelProvider implements HotelProvider {
     public Collection<Hotel> hotels() {
         Collection<Hotel> hotels = new ArrayList<Hotel>();
         hotels.add(new Hotel("Au bon Hotel", "Paris", "France"));
+        hotels.add(new Hotel("Hotel California", "Paris", "France"));
+        hotels.add(new Hotel("Hotel Claridge", "Paris", "France"));
         return hotels;
     }
 

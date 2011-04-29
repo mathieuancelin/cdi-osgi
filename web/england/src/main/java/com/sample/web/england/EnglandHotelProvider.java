@@ -14,7 +14,8 @@ public class EnglandHotelProvider implements HotelProvider {
     @Override
     public Collection<Hotel> hotels() {
         Collection<Hotel> hotels = new ArrayList<Hotel>();
-        hotels.add(new Hotel("The british Hotel", "London", "England"));
+        hotels.add(new Hotel("The Montcalm", "London", "England"));
+        hotels.add(new Hotel("The Berkeley", "London", "England"));
         return hotels;
     }
 

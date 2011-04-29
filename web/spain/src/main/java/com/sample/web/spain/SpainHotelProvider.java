@@ -14,7 +14,11 @@ public class SpainHotelProvider implements HotelProvider {
     @Override
     public Collection<Hotel> hotels() {
         Collection<Hotel> hotels = new ArrayList<Hotel>();
-        hotels.add(new Hotel("Los Hostel", "Madrid", "Spain"));
+        hotels.add(new Hotel("Catalonia Plaza Mayor", "Madrid", "Spain"));
+        hotels.add(new Hotel("emperador", "Madrid", "Spain"));
+        hotels.add(new Hotel("Il Castillas hotel", "Madrid", "Spain"));
+        hotels.add(new Hotel("Ada Palace", "Madrid", "Spain"));
+        hotels.add(new Hotel("Palafox Central Suites", "Madrid", "Spain"));
         return hotels;
     }
 
