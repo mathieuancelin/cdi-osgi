@@ -23,7 +23,8 @@ public class App {
     private AtomicBoolean valid = new AtomicBoolean(false);
 
     public void start(@Observes BundleContainerInitialized init) throws Exception {
-        this.tracker = new HttpServiceTracker(init.getBundleContext(), instances, CONTEXT_ROOT);
+        this.tracker = new HttpServiceTracker(init.getBundleContext(), 
+                getClass().getClassLoader(), instances, CONTEXT_ROOT);
         this.tracker.open();
     }
     

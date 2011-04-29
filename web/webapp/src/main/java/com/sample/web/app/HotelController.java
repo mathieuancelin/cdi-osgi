@@ -9,6 +9,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.osgi.cdi.api.extension.Service;
 import org.osgi.cdi.api.extension.annotation.Required;
