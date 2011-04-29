@@ -35,7 +35,8 @@ public class HotelController implements Controller {
         } else {
             return Render.view("hotel/none.xhtml", getClass())
                     .param("hotels", hotels)
-                    .param("providers", providers).render();
+                    .param("providers", providers)
+                    .render();
         }
     }
 
