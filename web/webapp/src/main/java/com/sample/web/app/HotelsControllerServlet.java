@@ -18,7 +18,7 @@ import org.osgi.cdi.api.extension.Service;
 import org.osgi.cdi.api.extension.annotation.Required;
 
 @ApplicationScoped
-public class HotelsController extends HttpServlet {
+public class HotelsControllerServlet extends HttpServlet {
 
     @Inject App app;
 
@@ -59,25 +59,5 @@ public class HotelsController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doServe(req, resp);
-    }
-
-    private static class Page {
-        private final String content;
-        private final String title;
-        public Page(String title, String content) {
-            this.content = content;
-            this.title = title;
-        }
-
-        public String get() {
-            return "<html>"
-                    + "<head>"
-                        + "<title>" + title + "</title>"
-                    + "</head>"
-                    + "<body>"
-                        + content
-                    + "</body>"
-                + "</html>";
-        }
     }
 }

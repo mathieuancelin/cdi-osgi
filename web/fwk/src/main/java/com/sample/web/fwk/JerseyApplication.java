@@ -5,10 +5,14 @@ import javax.ws.rs.core.Application;
 
 public class JerseyApplication extends Application {
 
-    public static ThreadLocal<Set<Class<?>>> classes = new ThreadLocal<Set<Class<?>>>();
+    private Set<Class<?>> classes;
+
+    public void setClasses(Set<Class<?>> classes) {
+        this.classes = classes;
+    }
 
     @Override
     public Set<Class<?>> getClasses() {
-        return classes.get();
+        return classes;
     }
 }
