@@ -49,12 +49,14 @@ public class TemplateRenderer {
         StringWriter osw = new StringWriter();
         context.put("out", osw);
         URL file = loader.getResource(fileName);
-        if (!templates.containsKey(file.toString())) {
-            String code = readFromURL(file);
-            templates.putIfAbsent(file.toString()
-                , engine.createTemplate(enhanceCode(code, contextRoot, loader)));
-        }
-        return templates.get(file.toString()).make(context).writeTo(osw).toString();
+//        if (!templates.containsKey(file.toString())) {
+//            String code = readFromURL(file);
+//            templates.putIfAbsent(file.toString()
+//                , engine.createTemplate(enhanceCode(code, contextRoot, loader)));
+//        }
+//        return templates.get(file.toString()).make(context).writeTo(osw).toString();
+        String code = readFromURL(file);
+        return engine.createTemplate(enhanceCode(code, contextRoot, loader)).make(context).writeTo(osw).toString();
     }
 
     public static String enhanceCode(String code, String contextRoot, ClassLoader loader) {
