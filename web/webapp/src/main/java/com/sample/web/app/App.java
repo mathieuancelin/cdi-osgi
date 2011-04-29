@@ -18,9 +18,7 @@ public class App {
     private static final String CONTEXT_ROOT = "/app";
 
     @Inject @Any Instance<Object> instances;
-    
-    @Inject HotelsControllerServlet controller;
-    
+        
     private ServiceTracker tracker;
     private AtomicBoolean valid = new AtomicBoolean(false);
 
